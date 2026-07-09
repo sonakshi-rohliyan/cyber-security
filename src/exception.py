@@ -11,11 +11,3 @@ class CustomException(Exception):
     def __str__(self):
         return f"Error occured in python scrip of name {self.file_name}, line number {self.lineno}, error message is {str(self.error_message)}"
     
-
-if __name__ == "__main__":
-    try:
-        logging.info("Exception handling check")
-        a=1/0
-        print("This will not be printed")
-    except Exception as e:
-        raise CustomException(e,sys)
