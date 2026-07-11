@@ -1,0 +1,6 @@
+[2026-07-11 09:52:36,573] 12 root - INFO - Initiate module
+[2026-07-11 09:52:36,820] 41 root - INFO - Sucessfully connected
+[2026-07-11 09:52:38,200] 44 root - INFO - Dataframe created from MongoDb
+[2026-07-11 09:52:38,259] 67 root - INFO - csv file created in the location using dataframe
+[2026-07-11 09:52:38,263] 77 root - INFO - Performed train test split on dataframe
+[2026-07-11 09:52:38,301] 85 root - INFO - Train and Test csv created
