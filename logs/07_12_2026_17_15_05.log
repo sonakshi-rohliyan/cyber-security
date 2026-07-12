@@ -1,0 +1,13 @@
+[2026-07-12 17:15:05,574] 14 root - INFO - Initiate module
+[2026-07-12 17:15:05,757] 41 root - INFO - Sucessfully connected
+[2026-07-12 17:15:08,325] 44 root - INFO - Dataframe created from MongoDb
+[2026-07-12 17:15:08,376] 67 root - INFO - csv file created in the location using dataframe
+[2026-07-12 17:15:08,378] 77 root - INFO - Performed train test split on dataframe
+[2026-07-12 17:15:08,425] 85 root - INFO - Train and Test csv created
+[2026-07-12 17:15:08,425] 16 root - INFO - Data initiation completed
+[2026-07-12 17:15:08,429] 20 root - INFO - initiate data ingestion
+[2026-07-12 17:15:08,442] 79 root - INFO - Made a dataframe by reading test and train csv
+[2026-07-12 17:15:08,442] 35 root - INFO - Required number of columns: 2
+[2026-07-12 17:15:08,442] 36 root - INFO - Data frame has columns: 31
+[2026-07-12 17:15:08,442] 35 root - INFO - Required number of columns: 2
+[2026-07-12 17:15:08,442] 36 root - INFO - Data frame has columns: 31

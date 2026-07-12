@@ -6,4 +6,6 @@ seaborn
 scikit-learn
 pymongo
 certifi
+dill
+pyaml
 #-e .
