@@ -1,0 +1,130 @@
+import os
+import sys
+
+from src.exception import CustomException
+from src.logger import logging
+from src.entity.config_entity import ModelTrainerConfig
+from src.entity.artifact_entity import ModelTrainerArtifact, DataTransformationArtifact
+from src.utils import save_object, load_object, load_numpy_array_data,evaluate_models
+from src.utils.classificatio_metric import get_classification_score
+from src.utils.estimator import NetworkModel
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, GradientBoostingClassifier
+
+class ModelTrainer:
+    def __init__(self, model_trainer_config:ModelTrainerConfig,data_transformation_artifact:DataTransformationArtifact):
+        try:
+            self.model_trainer_config = model_trainer_config
+            self.data_transformation_artifact = data_transformation_artifact
+
+        except Exception as e:
+            CustomException(e,sys)
+    
+    def train_model(self, X_train,y_train,X_test,y_test):
+        try:
+            logging.info("Model training started")
+            models = {
+                    "Random Forest": RandomForestClassifier(verbose=1),
+                    "Decision Tree": DecisionTreeClassifier(),
+                    "Gradient Boosting": GradientBoostingClassifier(verbose=1),
+                    "Logistic Regression": LogisticRegression(verbose=1),
+                    "AdaBoost": AdaBoostClassifier(),
+                }
+            params={
+                "Decision Tree": {
+                    'criterion':['gini', 'entropy', 'log_loss'],
+                    # 'splitter':['best','random'],
+                    # 'max_features':['sqrt','log2'],
+                },
+                "Random Forest":{
+                    # 'criterion':['gini', 'entropy', 'log_loss'],
+                    
+                    # 'max_features':['sqrt','log2',None],
+                    'n_estimators': [8,16,32,128,256]
+                },
+                "Gradient Boosting":{
+                    # 'loss':['log_loss', 'exponential'],
+                    'learning_rate':[.1,.01,.05,.001],
+                    'subsample':[0.6,0.7,0.75,0.85,0.9],
+                    # 'criterion':['squared_error', 'friedman_mse'],
+                    # 'max_features':['auto','sqrt','log2'],
+                    'n_estimators': [8,16,32,64,128,256]
+                },
+                "Logistic Regression":{},
+                "AdaBoost":{
+                    'learning_rate':[.1,.01,.001],
+                    'n_estimators': [8,16,32,64,128,256]
+                }
+                
+            }
+            model_report:dict = evaluate_models(X_train,y_train,X_test,y_test,models,params)
+            logging.info(f"Model report is {model_report}")
+            #get the best model score
+            best_model_score = max(sorted(model_report.values()))
+            #get the best model name
+            best_model_name = list(model_report.keys())[
+                list(model_report.values()).index(best_model_score)
+            ]
+
+            best_model = models[best_model_name]
+
+            y_train_pred = best_model.predict(X_train)
+            classification_train_metric = get_classification_score(y_train,y_train_pred)
+
+            y_test_pred = best_model.predict(X_test)
+            classification_test_metric = get_classification_score(y_test,y_test_pred)
+
+            logging.info("PRedicted data aquired")
+
+            preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
+            logging.info("Preprocessor object loaded successfully")
+            model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
+            logging.info(f"Model directory path is {model_dir_path}")
+            os.makedirs(model_dir_path,exist_ok=True)
+            logging.info(f"Model directory created successfully")
+
+
+            Network_model = NetworkModel(preprocessor,best_model)
+            save_object(self.model_trainer_config.trained_model_file_path, obj=Network_model)
+            logging.info(f"Model saved at {self.model_trainer_config.trained_model_file_path}")
+
+            #model trainer artifact
+            model_trainer_artifact = ModelTrainerArtifact(trained_model_file_parth=self.model_trainer_config.trained_model_file_path, train_metric_artifact=classification_train_metric,test_metric_artifact=classification_test_metric)
+
+            logging.info(f"The best model is {best_model}")
+
+            return model_trainer_artifact
+
+        except Exception as e:
+            CustomException(e,sys)
+
+    def initiate_model_trainer(self):
+        try:
+            logging.info("Initiate model training")
+            train_file_path = self.data_transformation_artifact.transformed_train_file_path
+            test_file_path = self.data_transformation_artifact.transformed_test_file_path
+
+            logging.info("Loading training and testing array")
+            #loading training and testing array
+            train_arr = load_numpy_array_data(train_file_path)
+            test_arr = load_numpy_array_data(test_file_path)
+
+            logging.info("Training and testing array loaded successfully")
+
+            #defining our variable names
+
+            X_train,y_train,X_test,y_test = (
+                train_arr[:,:-1],
+                train_arr[:,-1],
+                test_arr[:,:-1],
+                test_arr[:,-1]
+            )
+            logging.info("enter the function train_model")
+            model_trainer_Articat = self.train_model(X_train,y_train,X_test,y_test)
+            return model_trainer_Articat
+
+        except Exception as e:
+            CustomException(e,sys)
