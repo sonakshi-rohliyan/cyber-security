@@ -1,0 +1,34 @@
+[2026-07-15 15:44:38,287] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[2026-07-15 15:44:38,302] 107 dagshub - INFO - Accessing as sonakshi-rohliyan
+[2026-07-15 15:44:39,236] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/sonakshi-rohliyan/cyber-security "HTTP/1.1 200 OK"
+[2026-07-15 15:44:40,091] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[2026-07-15 15:44:40,093] 107 dagshub - INFO - Initialized MLflow to track repo "sonakshi-rohliyan/cyber-security"
+[2026-07-15 15:44:40,093] 107 dagshub - INFO - Repository sonakshi-rohliyan/cyber-security initialized!
+[2026-07-15 15:46:03,445] 34 root - INFO - Start data Ingestion
+[2026-07-15 15:46:03,601] 41 root - INFO - Sucessfully connected
+[2026-07-15 15:46:06,121] 44 root - INFO - Dataframe created from MongoDb
+[2026-07-15 15:46:06,171] 67 root - INFO - csv file created in the location using dataframe
+[2026-07-15 15:46:06,173] 77 root - INFO - Performed train test split on dataframe
+[2026-07-15 15:46:06,212] 85 root - INFO - Train and Test csv created
+[2026-07-15 15:46:06,212] 37 root - INFO - Data ingestion completed and artifact: DataIngestArtifact(trained_file_path='Artifacts/07_15_2026_15_44_35/data_ingestion/ingested/train.csv', test_file_path='Artifacts/07_15_2026_15_44_35/data_ingestion/ingested/test.csv')
+[2026-07-15 15:46:06,218] 47 root - INFO - Initiate the data validation
+[2026-07-15 15:46:06,228] 79 root - INFO - Made a dataframe by reading test and train csv
+[2026-07-15 15:46:06,228] 35 root - INFO - Required number of columns: 2
+[2026-07-15 15:46:06,228] 36 root - INFO - Data frame has columns: 31
+[2026-07-15 15:46:06,228] 35 root - INFO - Required number of columns: 2
+[2026-07-15 15:46:06,228] 36 root - INFO - Data frame has columns: 31
+[2026-07-15 15:46:06,332] 49 root - INFO - Data validation completed and artifact: DataValidationArtifact(validation_status=None, valid_train_file_path='Artifacts/07_15_2026_15_44_35/data_ingestion/ingested/train.csv', valid_test_file_path='Artifacts/07_15_2026_15_44_35/data_ingestion/ingested/test.csv', invalid_train_file_path=None, invalid_test_file_path=None, drift_report_file_path='Artifacts/07_15_2026_15_44_35/data_validation/drift_report/report.yaml')
+[2026-07-15 15:46:06,332] 58 root - INFO - Initiate the data transformation
+[2026-07-15 15:46:06,332] 47 root - INFO - Entered initiate_data_transformation in DataTransformation class
+[2026-07-15 15:46:06,332] 49 root - INFO - Starting data tranformation
+[2026-07-15 15:46:06,343] 37 root - INFO - Entered data_transforming_pipeline to form a pipelinne
+[2026-07-15 15:46:06,382] 60 root - INFO - Data transformation completed and artifact: DataTransformationArtifact(transformed_object_file_path='Artifacts/07_15_2026_15_44_35/data_transformation/transformed_object/preprocessing.pkl', transformed_train_file_path='Artifacts/07_15_2026_15_44_35/data_transformation/transformed/train.npy', transformed_test_file_path='Artifacts/07_15_2026_15_44_35/data_transformation/transformed/test.npy')
+[2026-07-15 15:46:06,382] 123 root - INFO - Initiate model training
+[2026-07-15 15:46:06,382] 127 root - INFO - Loading training and testing array
+[2026-07-15 15:46:06,383] 132 root - INFO - Training and testing array loaded successfully
+[2026-07-15 15:46:06,383] 142 root - INFO - enter the function train_model
+[2026-07-15 15:46:06,384] 42 root - INFO - Model training started
+[2026-07-15 15:48:21,683] 78 root - INFO - Model report is {'Random Forest': 0.8937001608116846, 'Decision Tree': 0.8662088230905685, 'Gradient Boosting': 0.8423829970656013, 'Logistic Regression': 0.7030935526119465, 'AdaBoost': 0.6994280409157978}
+[2026-07-15 15:49:06,694] 100 root - INFO - Model directory path is Artifacts/07_15_2026_15_44_35/model_trainer/trained_model
+[2026-07-15 15:49:06,728] 106 root - INFO - Model saved at Artifacts/07_15_2026_15_44_35/model_trainer/trained_model/model.pkl
+[2026-07-15 15:49:06,766] 114 root - INFO - The best model is RandomForestClassifier(n_estimators=128, verbose=1)

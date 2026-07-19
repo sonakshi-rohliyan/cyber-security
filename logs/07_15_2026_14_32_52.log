@@ -1,0 +1,36 @@
+[2026-07-15 14:32:55,028] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[2026-07-15 14:32:55,039] 107 dagshub - INFO - Accessing as sonakshi-rohliyan
+[2026-07-15 14:32:55,969] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/repos/sonakshi-rohliyan/cyber-security "HTTP/1.1 200 OK"
+[2026-07-15 14:32:56,887] 1025 httpx - INFO - HTTP Request: GET https://dagshub.com/api/v1/user "HTTP/1.1 200 OK"
+[2026-07-15 14:32:56,889] 107 dagshub - INFO - Initialized MLflow to track repo "sonakshi-rohliyan/cyber-security"
+[2026-07-15 14:32:56,889] 107 dagshub - INFO - Repository sonakshi-rohliyan/cyber-security initialized!
+[2026-07-15 14:32:56,953] 18 root - INFO - Initiate module
+[2026-07-15 14:32:57,179] 41 root - INFO - Sucessfully connected
+[2026-07-15 14:32:58,453] 44 root - INFO - Dataframe created from MongoDb
+[2026-07-15 14:32:58,508] 67 root - INFO - csv file created in the location using dataframe
+[2026-07-15 14:32:58,511] 77 root - INFO - Performed train test split on dataframe
+[2026-07-15 14:32:58,551] 85 root - INFO - Train and Test csv created
+[2026-07-15 14:32:58,551] 20 root - INFO - Data initiation completed
+[2026-07-15 14:32:58,556] 26 root - INFO - initiate data validation
+[2026-07-15 14:32:58,566] 79 root - INFO - Made a dataframe by reading test and train csv
+[2026-07-15 14:32:58,566] 35 root - INFO - Required number of columns: 2
+[2026-07-15 14:32:58,566] 36 root - INFO - Data frame has columns: 31
+[2026-07-15 14:32:58,566] 35 root - INFO - Required number of columns: 2
+[2026-07-15 14:32:58,566] 36 root - INFO - Data frame has columns: 31
+[2026-07-15 14:32:58,683] 28 root - INFO - finished the data validation
+[2026-07-15 14:32:58,683] 34 root - INFO - initiate data transformation
+[2026-07-15 14:32:58,683] 47 root - INFO - Entered initiate_data_transformation in DataTransformation class
+[2026-07-15 14:32:58,683] 49 root - INFO - Starting data tranformation
+[2026-07-15 14:32:58,694] 37 root - INFO - Entered data_transforming_pipeline to form a pipelinne
+[2026-07-15 14:32:58,730] 36 root - INFO - finished the data transformation
+[2026-07-15 14:32:58,730] 42 root - INFO - Meow meow model training
+[2026-07-15 14:32:58,730] 123 root - INFO - Initiate model training
+[2026-07-15 14:32:58,730] 127 root - INFO - Loading training and testing array
+[2026-07-15 14:32:58,731] 132 root - INFO - Training and testing array loaded successfully
+[2026-07-15 14:32:58,731] 142 root - INFO - enter the function train_model
+[2026-07-15 14:32:58,731] 42 root - INFO - Model training started
+[2026-07-15 14:35:06,815] 78 root - INFO - Model report is {'Random Forest': 0.8749590399121749, 'Decision Tree': 0.8565706634286712, 'Gradient Boosting': 0.8510541504836201, 'Logistic Regression': 0.726013190395795, 'AdaBoost': 0.6910752750771381}
+[2026-07-15 14:35:51,283] 100 root - INFO - Model directory path is Artifacts/07_15_2026_14_32_52/model_trainer/trained_model
+[2026-07-15 14:35:51,355] 106 root - INFO - Model saved at Artifacts/07_15_2026_14_32_52/model_trainer/trained_model/model.pkl
+[2026-07-15 14:35:51,429] 114 root - INFO - The best model is RandomForestClassifier(n_estimators=256, verbose=1)
+[2026-07-15 14:35:51,430] 44 root - INFO - Model training artifact create

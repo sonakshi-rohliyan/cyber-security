@@ -1,5 +1,8 @@
 import os
 import sys
+import mlflow
+import dagshub
+dagshub.init(repo_owner='sonakshi-rohliyan', repo_name='cyber-security', mlflow=True)
 
 from src.exception import CustomException
 from src.logger import logging
@@ -21,8 +24,19 @@ class ModelTrainer:
             self.data_transformation_artifact = data_transformation_artifact
 
         except Exception as e:
-            CustomException(e,sys)
-    
+            raise CustomException(e,sys)
+
+    def track_mlflow(self,best_model,classification_metric):
+        with mlflow.start_run():
+            f1_score = classification_metric.f1_score
+            precision_score = classification_metric.precision_score
+            recall_score = classification_metric.recall_score
+
+            mlflow.log_metric("f1_score",f1_score)
+            mlflow.log_metric("precision", precision_score)
+            mlflow.log_metric("recall_score",recall_score)
+            mlflow.sklearn.log_model(best_model,"model ")
+
     def train_model(self, X_train,y_train,X_test,y_test):
         try:
             logging.info("Model training started")
@@ -73,23 +87,26 @@ class ModelTrainer:
 
             y_train_pred = best_model.predict(X_train)
             classification_train_metric = get_classification_score(y_train,y_train_pred)
+            #track using mlflow
+            self.track_mlflow(best_model,classification_train_metric)
 
             y_test_pred = best_model.predict(X_test)
             classification_test_metric = get_classification_score(y_test,y_test_pred)
-
-            logging.info("PRedicted data aquired")
+            #track using mlflow
+            self.track_mlflow(best_model,classification_test_metric)
 
             preprocessor = load_object(file_path=self.data_transformation_artifact.transformed_object_file_path)
-            logging.info("Preprocessor object loaded successfully")
             model_dir_path = os.path.dirname(self.model_trainer_config.trained_model_file_path)
             logging.info(f"Model directory path is {model_dir_path}")
             os.makedirs(model_dir_path,exist_ok=True)
-            logging.info(f"Model directory created successfully")
 
 
             Network_model = NetworkModel(preprocessor,best_model)
             save_object(self.model_trainer_config.trained_model_file_path, obj=Network_model)
             logging.info(f"Model saved at {self.model_trainer_config.trained_model_file_path}")
+
+            final_model_path = os.path.join("prediction_model", "model.pkl")
+            save_object(final_model_path,best_model)
 
             #model trainer artifact
             model_trainer_artifact = ModelTrainerArtifact(trained_model_file_parth=self.model_trainer_config.trained_model_file_path, train_metric_artifact=classification_train_metric,test_metric_artifact=classification_test_metric)
@@ -99,7 +116,7 @@ class ModelTrainer:
             return model_trainer_artifact
 
         except Exception as e:
-            CustomException(e,sys)
+            raise CustomException(e,sys)
 
     def initiate_model_trainer(self):
         try:
@@ -127,4 +144,4 @@ class ModelTrainer:
             return model_trainer_Articat
 
         except Exception as e:
-            CustomException(e,sys)
+            raise CustomException(e,sys)
